@@ -1,40 +1,59 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import React from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
 
-function App() {
-  const [count, setCount] = useState(0);
+const data = [
+  { name: "SDFWAMCO", amt: 6000 },
+  { name: "SDPURLERE", amt: 5000 },
+  { name: "SDNDEP", amt: 4000 },
+  { name: "SDNIPCOPLC", amt: 3080 },
+  { name: "SDUBNPROP", amt: 2000 },
+];
 
+const colors = ["#1D4E89", "#00B2CA", "#7DCFB6", "#FBD1A2", "#F79256"];
+
+const App = () => {
   return (
-    <div className="App">
-      <div>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-      </div>
-      <h1>React + Vite</h1>
-      <h2>On CodeSandbox!</h2>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR.
-        </p>
-
-        <p>
-          Tip: you can use the inspector button next to address bar to click on
-          components in the preview and open the code in the editor!
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div style={{ width: "500px", paddingLeft: "20px" }}>
+      <ResponsiveContainer width="100%" height={400}>
+        <BarChart data={data} layout="vertical">
+          <XAxis type="number" hide={true} />
+          <YAxis
+            width={150}
+            dataKey="name"
+            type="category"
+            axisLine={false}
+            tickLine={false}
+            style={{ textAnchor: "start" }}
+            tick={{ dx: -120 }}
+          />
+          {/* <Tooltip /> */}
+          <Bar dataKey="amt" barSize={50} radius={[10, 10, 10, 10]}>
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={colors[index % colors.length]}
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <style>
+        {`
+          .recharts-y-axis .recharts-text {
+            transform: rotate(180deg);
+            transform-origin: center;
+          }
+        `}
+      </style>
     </div>
   );
-}
+};
 
 export default App;
